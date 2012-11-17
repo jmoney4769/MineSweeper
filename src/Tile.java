@@ -6,7 +6,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
 
 /**
  * @author Jared Moore
@@ -16,11 +15,11 @@ public class Tile extends JToggleButton implements MineTile {
 
 	private static Tile[][] array;
 	private final int ROW, COLUMN;
-	private boolean hasMine, mineClicked = false, isPressed = false;
+	private boolean hasMine, mineClicked = false, isPressed = false, hasFlag = false;
 	private static ImageIcon mineImage = new ImageIcon("res/mine.jpg"), // image from http://nifty.stanford.edu/2004/LehmanMinesweeper/instructor.htm
 			flagImage = new ImageIcon("res/flag.png"); // image from http://dougx.net/sweeper/sweeper.php;
 	private static MineSweeperPanel panel;
-	
+
 	/** Constructor for Tile
 	 */
 	public Tile(int row, int column, MineSweeperPanel pan) {
@@ -36,16 +35,37 @@ public class Tile extends JToggleButton implements MineTile {
 			public void mouseClicked(MouseEvent e) {
 				
 				if (e.getButton() == MouseEvent.BUTTON3) {
-					if (getIcon() != flagImage) {
+					if ((getIcon() != flagImage) && panel.isFlagLeft()) {
 						getModel().setArmed(false);
 						getModel().setPressed(false);
 						setIcon(flagImage);
+						hasFlag = true;
+						panel.addFlag(true);
 					}
 					else {
 						setIcon(null);
 						getModel().setArmed(true);
+						panel.addFlag(false);
 					}
 				}
+			}
+			
+			/* (non-Javadoc)
+			 * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
+			 */
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getButton() != MouseEvent.BUTTON3)
+					panel.pressed(true);
+			}
+			
+			/* (non-Javadoc)
+			 * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+			 */
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (!hasMine && (e.getButton() != MouseEvent.BUTTON3))
+					panel.pressed(false);
 			}
 		});
 		addActionListener(new ActionListener() {
@@ -57,8 +77,10 @@ public class Tile extends JToggleButton implements MineTile {
 					getModel().setPressed(true);
 					if (hasMine) 
 						panel.mineClicked(ROW, COLUMN);					
-					else
-						openTile();
+					else {
+						openTiles();
+						//panel.hasWon();	
+					}
 				}
 			}
 		});
@@ -67,7 +89,19 @@ public class Tile extends JToggleButton implements MineTile {
 	/**
 	 * 
 	 */
-	public void openTile() {
+	public void openTiles() {
+		
+		panel.openTiles(this);
+	}
+
+	/**
+	 * 
+	 */
+	public int openTile() {
+		if (isPressed)
+			return -1;
+		if (panel.isFirstClick())
+			panel.setFirstClick(false);
 		array = panel.getTiles();
 		getModel().setPressed(true);
 		getModel().setArmed(false);
@@ -104,9 +138,8 @@ public class Tile extends JToggleButton implements MineTile {
 			// Colors from http://www.sporcle.com/games/patrickstar92/minesweeper_colors/results
 			}
 		}
-		else 
-			panel.openTiles(this);
 		isPressed = true;
+		return mines;
 		
 	}
 
@@ -188,20 +221,6 @@ public class Tile extends JToggleButton implements MineTile {
 		Tile.array = array;
 	}
 
-	/** Getter for rOW
-	 * @return the rOW
-	 */
-	public int getROW() {
-		return ROW;
-	}
-
-	/** Getter for cOLUMN
-	 * @return the cOLUMN
-	 */
-	public int getCOLUMN() {
-		return COLUMN;
-	}
-
 	/** Getter for hasMine
 	 * @return the hasMine
 	 */
@@ -228,6 +247,13 @@ public class Tile extends JToggleButton implements MineTile {
 	 */
 	public static ImageIcon getFlagImage() {
 		return flagImage;
+	}
+	
+	/** Getter for hasFlag
+	 * @return the hasFlag
+	 */
+	public boolean hasFlag() {
+		return hasFlag;
 	}
 
 }

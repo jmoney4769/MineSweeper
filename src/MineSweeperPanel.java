@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,8 +11,9 @@ import javax.swing.JPanel;
  */
 public class MineSweeperPanel extends JPanel {
 	
-	private boolean firstClick;
+	private boolean firstClick = true;
 	private Tile[][] tiles;
+	private TopPanel top;
 
 	/** Constructor for MineSweeperPanel 
 	 */
@@ -40,6 +42,13 @@ public class MineSweeperPanel extends JPanel {
 		repaint();
 	}
 
+	/** Setter for top
+	 * @param top the top to set
+	 */
+	public void setTop(TopPanel top) {
+		this.top = top;
+	}
+
 	/**
 	 * @param row
 	 * @param column
@@ -55,12 +64,36 @@ public class MineSweeperPanel extends JPanel {
 							tiles[i][j].setHasMine(true);
 							tiles[row][column].setHasMine(false);
 							placed = true;
+							openTiles(tiles[i][j]);
 						}
 			}
+			firstClick = false;
 			return;
 		}
 		
 		tiles[row][column].setIcon(Tile.getMineImage());
+		tiles[row][column].setBackground(Color.RED);
+		for (Tile[] i : tiles)
+			for (Tile j : i) {
+				j.getModel().setEnabled(false);
+				if (j.hasMine())
+					j.setIcon(Tile.getMineImage());
+			}
+		top.getSmiley().setIcon(TopPanel.getLost());
+	}
+
+	/** Getter for firstClick
+	 * @return the firstClick
+	 */
+	public boolean isFirstClick() {
+		return firstClick;
+	}
+
+	/** Setter for firstClick
+	 * @param firstClick the firstClick to set
+	 */
+	public void setFirstClick(boolean firstClick) {
+		this.firstClick = firstClick;
 	}
 
 	/**
@@ -69,13 +102,12 @@ public class MineSweeperPanel extends JPanel {
 	 */
 	public void openTiles(Tile tile) {
 		
-		ArrayList<Tile> array = MinesweeperUtils.expandTile(tile, tiles);
-		for (Tile i : array)
-			if (!i.isPressed())
-				i.openTile();
-			else
-				return;
-		
+		if (tile.openTile() == 0);
+			ArrayList<Tile> array = MinesweeperUtils.expandTile(tile, tiles);
+			for (Tile i : array)
+				if (i.openTile() == 0)
+					openTiles(i);
+	
 	}
 
 	/** Getter for tiles
@@ -85,5 +117,50 @@ public class MineSweeperPanel extends JPanel {
 		return tiles;
 	}
 
+	/**
+	 * @return
+	 */
+	public boolean isFlagLeft() {
+		
+		return (top.getNumOfFlags() > 0);
+	}
 
+	/**
+	 * @param add 
+	 * 
+	 */
+	public void addFlag(boolean add) {
+		
+		top.changeFlags(!add);
+	}
+
+	/**
+	 * @param isDown
+	 */
+	public void pressed(boolean isDown) {
+	
+		if (isDown) 
+			top.getSmiley().setIcon(TopPanel.getUncertain());
+		else 
+			top.getSmiley().setIcon(TopPanel.getNormal());
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean hasWon() {
+		for (Tile[] i : tiles)
+			for (Tile j : i)
+				/*if (!(j.hasMine() && j.hasFlag()) && !(!j.hasMine() && !j.hasFlag())) {
+					System.out.println(j.getRow() + "" + j.getCol());
+					return false;
+				}*/
+				if (!(!j.hasMine() && j.isPressed())) 
+					if (!j.hasMine()) {
+						return false;
+					}
+		
+		top.getSmiley().setIcon(TopPanel.getFinished());
+		return true;
+	}
 }

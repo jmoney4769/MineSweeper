@@ -62,7 +62,7 @@ public class StartPanel extends JPanel {
 			if ((e.getSource().equals(button)) && ((beginner.isSelected()) || 
 					(intermediate.isSelected()) || (expert.isSelected()) || (custom.isSelected())))
 				if (beginner.isSelected())
-					buildTiles(8, 8, 16);
+					buildTiles(8, 8, 10);
 				else if (intermediate.isSelected())
 					buildTiles(16, 16, 40);
 				else if (expert.isSelected())
@@ -107,22 +107,8 @@ public class StartPanel extends JPanel {
 	 */
 	public void buildTiles(int rows, int columns, int mines) {
 		
-		rows = (rows < 8) ? 8 : rows; // make sure input is legal
-		rows = (rows > 30) ? 30 : rows;
-		
-		columns = (columns < 8) ? 8 : columns;
-		columns = (columns > 24) ? 24 : columns;
-		
-		mines = (mines > (rows - 1) * (columns - 1)) ? ((rows - 1) * (columns - 1)) : mines;
-		
-		MineSweeperPanel panel = new MineSweeperPanel(rows, columns, mines);
-		frame.setMinimumSize(new Dimension(45 * rows, 45 * columns));
-		frame.setMaximumSize(new Dimension(45 * rows, 45 * columns));
-		frame.remove(this);
-		frame.add(panel);
-		frame.setTitle("Minesweeper");
-		frame.repaint();
-		panel.repaint();
+		BorderFrame border = new BorderFrame(rows, columns, mines);
+		frame.setVisible(false);
 		
 	}
 
