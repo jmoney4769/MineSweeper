@@ -1,0 +1,5 @@
+java.util.ArrayList<Integer> array = new java.util.ArrayList<Integer>(10);
+array.size()
+array.add(1);
+array.add(5);
+array.add(3);

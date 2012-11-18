@@ -2,10 +2,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * @author Jared Moore
@@ -14,15 +16,23 @@ import javax.swing.JOptionPane;
 public class MenuBar extends JMenuBar {
 	
 	BorderFrame frame;
-	JMenu beginner = new JMenu("Beginner"), intermediate = new JMenu("Intermediate"), expert = new JMenu("Expert"),
-			custom = new JMenu("Custom"), scores = new JMenu("Scores"), hint = new JMenu("Hint");
+	JMenuItem beginner = new JMenuItem("Beginner"), intermediate = new JMenuItem("Intermediate"), expert = new JMenuItem("Expert"),
+			custom = new JMenuItem("Custom"), scores = new JMenuItem("Scores"), hint = new JMenuItem("Hint");
 
 	/** Constructor for MenuBar
 	 * 
 	 */
-	public MenuBar(BorderFrame fra) {
+	public MenuBar(BorderFrame frame) {
 		
-		frame = fra;
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // changes the look a little, my system is themed so this looks pretty sweet
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+			System.err.println("You have an issue");
+			e.printStackTrace();
+			System.exit(1);
+		}
+		this.frame = frame;
 		
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic('F');
@@ -52,7 +62,17 @@ public class MenuBar extends JMenuBar {
 		scores.addActionListener(l);
 		
 		fileMenu.add(scores);
+		add(fileMenu);
 		
+		JMenu helpMenu = new JMenu("Help");
+		helpMenu.setMnemonic('H');
+		
+		hint.addActionListener(l);
+		hint.setMnemonic('I');
+		helpMenu.add(hint);
+		
+		add(helpMenu);
+		setVisible(true);
 	}
 	
 	private class Action implements ActionListener {
@@ -84,6 +104,10 @@ public class MenuBar extends JMenuBar {
 				BorderFrame newGame = new BorderFrame(Integer.parseInt(input.next()), Integer.parseInt(input.next()), Integer.parseInt(input.next()));
 				input.close();
 			}
+			else if (e.getSource().equals(hint))
+				frame.getPanel().showHint();
+			else if (e.getSource().equals(scores))
+				frame.getPanel().displayScores();
 		}
 	}
 

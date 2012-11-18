@@ -2,6 +2,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * @author Jared Moore
@@ -19,7 +21,17 @@ public class BorderFrame extends JFrame {
 	public BorderFrame(int rows, int columns, int mines) {
 		
 		setLayout(new BorderLayout());
+		MenuBar menu = new MenuBar(this);
+		setJMenuBar(menu);
 		
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // changes the look a little, my system is themed so this looks pretty sweet
+			} catch (ClassNotFoundException | InstantiationException
+					| IllegalAccessException | UnsupportedLookAndFeelException e) {
+				System.err.println("You have an issue");
+				e.printStackTrace();
+				System.exit(1);
+			}
 		
 		rows = (rows < 8) ? 8 : rows; // make sure input is legal
 		rows = (rows > 30) ? 30 : rows;
@@ -46,6 +58,7 @@ public class BorderFrame extends JFrame {
 		
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		pack();
 	}
 	
 	public void startOver() {
@@ -60,4 +73,13 @@ public class BorderFrame extends JFrame {
 		setVisible(false);
 		BorderFrame frame = new BorderFrame(rows, columns, mines);
 	}
+
+	/** Getter for panel
+	 * @return the panel
+	 */
+	public MineSweeperPanel getPanel() {
+		return panel;
+	}
+
+	
 } 

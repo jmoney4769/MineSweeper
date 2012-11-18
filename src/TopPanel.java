@@ -83,6 +83,13 @@ public class TopPanel extends JPanel {
 		return normal;
 	}
 
+	/** Getter for timer
+	 * @return the timer
+	 */
+	public Timer getTimer() {
+		return timer;
+	}
+
 	/** Getter for finished
 	 * @return the finished
 	 */

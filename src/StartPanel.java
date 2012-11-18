@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * @author Jared Moore
@@ -24,6 +26,15 @@ public class StartPanel extends JPanel {
 	/** Constructor for StartPanel
 	 */
 	public StartPanel(JFrame frame) {
+		
+		/*try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // changes the look a little, my system is themed so this looks pretty sweet
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+			System.err.println("You have an issue");
+			e.printStackTrace();
+			System.exit(1);
+		}*/
 		
 		this.frame = frame;
 		frame.setPreferredSize(new Dimension(300, 200));

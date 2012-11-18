@@ -3,6 +3,7 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -14,11 +15,15 @@ public class MineSweeperPanel extends JPanel {
 	private boolean firstClick = true;
 	private Tile[][] tiles;
 	private TopPanel top;
+	private LeaderBoard board;
+	private int mines;
 
 	/** Constructor for MineSweeperPanel 
 	 */
 	public MineSweeperPanel(int rows, int columns, int mines) {
 
+		this.mines = mines;
+		board = new LeaderBoard();
 		setLayout(new GridLayout(rows, columns));
 		
 		tiles = new Tile[rows][columns];
@@ -80,6 +85,7 @@ public class MineSweeperPanel extends JPanel {
 					j.setIcon(Tile.getMineImage());
 			}
 		top.getSmiley().setIcon(TopPanel.getLost());
+		top.getTimer().stop();
 	}
 
 	/** Getter for firstClick
@@ -161,6 +167,26 @@ public class MineSweeperPanel extends JPanel {
 					}
 		
 		top.getSmiley().setIcon(TopPanel.getFinished());
+		top.getTimer().stop();
+		board.add(top.getTime(), tiles.length, tiles[0].length, mines, JOptionPane.showInputDialog("Congratulations!  You Won!  What is your name?"));
 		return true;
+	}
+	
+	/**
+	 * 
+	 */
+	public void showHint() {
+		
+		for (Tile[] i : tiles)
+			for (Tile j : i)
+				if ((j.getIcon() == null || !j.getIcon().equals(Tile.getFlagImage())) && j.hasMine()) {
+					j.setIcon(Tile.getMineImage());
+					return;
+				}
+	}
+	
+	public void displayScores() {
+		
+		board.display();
 	}
 }
