@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-/**
+/** The top panel that holds the amount of mines, flags, and the smiley face
  * @author Jared Moore
  * @version Nov 15, 2012
  */
@@ -22,8 +22,7 @@ public class TopPanel extends JPanel {
 	private static ImageIcon normal = new ImageIcon("res/normal.gif"), finished = new ImageIcon("res/finished.gif"),
 			lost = new ImageIcon("res/lost.gif"), uncertain = new ImageIcon("res/uncertain.gif"); // all three images from http://www.personal.kent.edu/~bherzog/tao.html
 
-	/** Constructor for TopPanel
-	 * 
+	/** Constructor for TopPanel 
 	 */
 	public TopPanel(MineSweeperPanel minePanel, BorderFrame borderFrame, int mines) {
 		
@@ -35,7 +34,7 @@ public class TopPanel extends JPanel {
 		flags = new JLabel("Flags Left:" + numOfFlags);
 		
 		smiley.setIcon(TopPanel.getNormal());
-		smiley.addActionListener(new ActionListener() {
+		smiley.addActionListener(new ActionListener() { // starts the game over if the player clicks the face
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -48,7 +47,7 @@ public class TopPanel extends JPanel {
 			}
 		});
 		
-		timer = new Timer(1000, new ActionListener() {
+		timer = new Timer(1000, new ActionListener() { // update the time and check for victory every second
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -65,6 +64,9 @@ public class TopPanel extends JPanel {
 		
 	}
 
+	/** Increase or decrease the amount of flags
+	 * @param increment Whether to increase the flags
+	 */
 	public void changeFlags(boolean increment) {
 		
 		if (increment)

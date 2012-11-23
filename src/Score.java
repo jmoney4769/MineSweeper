@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-/**
+/** Class that represents one high score
  * @author Jared Moore
  * @version Nov 17, 2012
  */
@@ -14,7 +14,11 @@ public class Score implements Comparable<Score>, Serializable {
 	private String name;
 	
 	/** Constructor for Score
-	 * 
+	 * @param rows The number of rows of tiles
+	 * @param columns The number of columns of tiles
+	 * @param mines The number of mines
+	 * @param time The amount of time it took to win
+	 * @param name The name of the player who won
 	 */
 	public Score(int rows, int columns, int mines, int time, String name) {
 		
@@ -50,6 +54,9 @@ public class Score implements Comparable<Score>, Serializable {
 	@Override
 	public String toString() {
 		
+		if (time > 60) {
+			return String.format("%-12s%d x %d with %d mines in %d minutes and %d seconds", name, rows, columns, mines, time / 60, time % 60);
+		}
 		return String.format("%-12s%d x %d with %d mines in %d seconds", name, rows, columns, mines, time);
 	}
 

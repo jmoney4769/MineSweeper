@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
-/**
+/** Class that represents a single tile in the map
  * @author Jared Moore
  * @version Nov 14, 2012
  */
@@ -34,7 +34,7 @@ public class Tile extends JToggleButton implements MineTile {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				if (e.getButton() == MouseEvent.BUTTON3) {
+				if (e.getButton() == MouseEvent.BUTTON3) { // put up a flag if right clicked
 					if ((getIcon() != flagImage) && panel.isFlagLeft()) {
 						getModel().setArmed(false);
 						getModel().setPressed(false);
@@ -42,7 +42,7 @@ public class Tile extends JToggleButton implements MineTile {
 						hasFlag = true;
 						panel.addFlag(true);
 					}
-					else {
+					else { // remove the flag if it's already there
 						setIcon(null);
 						getModel().setArmed(true);
 						panel.addFlag(false);
@@ -54,7 +54,7 @@ public class Tile extends JToggleButton implements MineTile {
 			 * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
 			 */
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mousePressed(MouseEvent e) { // to see if the user is holding down the mouse button
 				if (e.getButton() != MouseEvent.BUTTON3)
 					panel.pressed(true);
 			}
@@ -68,7 +68,7 @@ public class Tile extends JToggleButton implements MineTile {
 					panel.pressed(false);
 			}
 		});
-		addActionListener(new ActionListener() {
+		addActionListener(new ActionListener() { // handle the left click
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -86,16 +86,14 @@ public class Tile extends JToggleButton implements MineTile {
 		});
 	}
 	
-	/**
-	 * 
+	/** Tell the panel to open all the tiles around and including this one, that should be opened 
 	 */
 	public void openTiles() {
 		
 		panel.openTiles(this);
 	}
 
-	/**
-	 * 
+	/** Open this tile, setting the text to the number of mines 
 	 */
 	public int openTile() {
 		if (isPressed)

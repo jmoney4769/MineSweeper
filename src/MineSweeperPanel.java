@@ -6,7 +6,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-/**
+/** Panel to hold the Mines, as JToggleButtons
  * @author Jared Moore
  * @version Nov 14, 2012
  */
@@ -47,20 +47,13 @@ public class MineSweeperPanel extends JPanel {
 		repaint();
 	}
 
-	/** Setter for top
-	 * @param top the top to set
-	 */
-	public void setTop(TopPanel top) {
-		this.top = top;
-	}
-
-	/**
-	 * @param row
-	 * @param column
+	/** Handle the event where a mine is clicked.  If it is on the first click, movie it to the top left corner
+	 * @param row The row of the tile
+	 * @param column The column of the tile
 	 */
 	public void mineClicked(int row, int column) {
 		
-		if (firstClick) {
+		if (firstClick) { // if there was a mine on the first click
 			tiles[row][column].setHasMine(false);
 			for (boolean placed = false; placed;) {
 				for (int i = 0; i < tiles.length; i++)
@@ -75,7 +68,7 @@ public class MineSweeperPanel extends JPanel {
 			firstClick = false;
 			return;
 		}
-		
+		// otherwise, the player loses
 		tiles[row][column].setIcon(Tile.getMineImage());
 		tiles[row][column].setBackground(Color.RED);
 		for (Tile[] i : tiles)
@@ -102,9 +95,8 @@ public class MineSweeperPanel extends JPanel {
 		this.firstClick = firstClick;
 	}
 
-	/**
-	 * @param tile
-	 * @param mines
+	/** Opens tile(s) around the one that was clicked
+	 * @param tile The tile that was clicked
 	 */
 	public void openTiles(Tile tile) {
 		
@@ -116,32 +108,24 @@ public class MineSweeperPanel extends JPanel {
 	
 	}
 
-	/** Getter for tiles
-	 * @return the tiles
-	 */
-	public Tile[][] getTiles() {
-		return tiles;
-	}
-
-	/**
-	 * @return
+	/** Makes sure the number of flags doesn't go below zero
+	 * @return Whether or not there are more than zero flags
 	 */
 	public boolean isFlagLeft() {
 		
 		return (top.getNumOfFlags() > 0);
 	}
 
-	/**
-	 * @param add 
-	 * 
+	/** Adds or removes a flag
+	 * @param add Whether to increment (true) or decrement (false) the number of flags 
 	 */
 	public void addFlag(boolean add) {
 		
 		top.changeFlags(!add);
 	}
 
-	/**
-	 * @param isDown
+	/** Changes the smiley icon when one pushes down the left mouse button
+	 * @param isDown Whether or not the mouse is down (true) or has been released
 	 */
 	public void pressed(boolean isDown) {
 	
@@ -151,29 +135,24 @@ public class MineSweeperPanel extends JPanel {
 			top.getSmiley().setIcon(TopPanel.getNormal());
 	}
 
-	/**
-	 * @return
+	/** Checks to see if the user has won by clicked all the tiles without mines
+	 * @return Whether or not the user has won
 	 */
 	public boolean hasWon() {
 		for (Tile[] i : tiles)
 			for (Tile j : i)
-				/*if (!(j.hasMine() && j.hasFlag()) && !(!j.hasMine() && !j.hasFlag())) {
-					System.out.println(j.getRow() + "" + j.getCol());
-					return false;
-				}*/
 				if (!(!j.hasMine() && j.isPressed())) 
 					if (!j.hasMine()) {
 						return false;
 					}
-		
+		// will only run if has not returned false
 		top.getSmiley().setIcon(TopPanel.getFinished());
 		top.getTimer().stop();
 		board.add(top.getTime(), tiles.length, tiles[0].length, mines, JOptionPane.showInputDialog("Congratulations!  You Won!  What is your name?"));
 		return true;
 	}
 	
-	/**
-	 * 
+	/** Shows the user where a single, unflagged mine is 
 	 */
 	public void showHint() {
 		
@@ -185,8 +164,24 @@ public class MineSweeperPanel extends JPanel {
 				}
 	}
 	
+	/** Displays the high score leaderboard
+	 */
 	public void displayScores() {
 		
 		board.display();
+	}
+	
+	/** Setter for top
+	 * @param top the top to set
+	 */
+	public void setTop(TopPanel top) {
+		this.top = top;
+	}
+	
+	/** Getter for tiles
+	 * @return the tiles
+	 */
+	public Tile[][] getTiles() {
+		return tiles;
 	}
 }

@@ -13,7 +13,7 @@ import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-/**
+/** The first panel the player sees when the program is started
  * @author Jared Moore
  * @version Nov 14, 2012
  */
@@ -27,21 +27,21 @@ public class StartPanel extends JPanel {
 	 */
 	public StartPanel(JFrame frame) {
 		
-		/*try {
+		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // changes the look a little, my system is themed so this looks pretty sweet
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			System.err.println("You have an issue");
 			e.printStackTrace();
 			System.exit(1);
-		}*/
+		}
 		
 		this.frame = frame;
 		frame.setPreferredSize(new Dimension(300, 200));
 		frame.setMinimumSize(new Dimension(300, 200));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		// sizes and rules for buildTiles are based on the rules found at 
-		// http://en.wikipedia.org/wiki/Minesweeper_(Windows)
+		// http://en.wikipedia.org/wiki/Minesweeper_(Windows) using the rules for the earlier versions of Windows
 		beginner = new JRadioButton("Beginner:  8 x 8 with 10 mines");
 		beginner.setSelected(true);
 		intermediate = new JRadioButton("Intermediate:  16 x 16 with 40 mines");
@@ -62,6 +62,10 @@ public class StartPanel extends JPanel {
 		
 	}
 	
+	/** Listener to handle events for the radio buttons
+	 * @author Jared Moore
+	 * @version Nov 21, 2012
+	 */
 	private class RadioListener extends MouseAdapter {
 		
 		/* (non-Javadoc)
@@ -71,7 +75,7 @@ public class StartPanel extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			
 			if ((e.getSource().equals(button)) && ((beginner.isSelected()) || 
-					(intermediate.isSelected()) || (expert.isSelected()) || (custom.isSelected())))
+					(intermediate.isSelected()) || (expert.isSelected()) || (custom.isSelected()))) // make sure only one is selected at a time
 				if (beginner.isSelected())
 					buildTiles(8, 8, 10);
 				else if (intermediate.isSelected())
@@ -111,10 +115,10 @@ public class StartPanel extends JPanel {
 		}
 	}
 
-	/**
-	 * @param rows
-	 * @param columns
-	 * @param mines
+	/** Build a new game with the desired amount of rows, columns, and mines
+	 * @param rows The number of rows to be used
+	 * @param columns The number of columns to be used
+	 * @param mines The number of mines in the game
 	 */
 	public void buildTiles(int rows, int columns, int mines) {
 		

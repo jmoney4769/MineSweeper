@@ -1,13 +1,13 @@
 import javax.swing.JFrame;
 
-/**
+/** File containing a main method to run the program
  * @author Jared Moore
  * @version Nov 14, 2012
  */
 public class MineSweeperMain {
 
-	/**
-	 * @param args
+	/** Main method.  Initiates the program
+	 * @param args Unused
 	 */
 	public static void main(String[] args) {
 

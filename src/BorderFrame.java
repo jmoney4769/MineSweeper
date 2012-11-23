@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-/**
+/** JFrame to hold all the components while playing the game
  * @author Jared Moore
  * @version Nov 15, 2012
  */
@@ -15,8 +15,7 @@ public class BorderFrame extends JFrame {
 	private MineSweeperPanel panel;
 	private TopPanel top;
 	
-	/** Constructor for BorderPanel
-	 * 
+	/** Constructor for BorderPanel 
 	 */
 	public BorderFrame(int rows, int columns, int mines) {
 		
@@ -45,7 +44,7 @@ public class BorderFrame extends JFrame {
 		this.mines = mines;
 		
 		panel = new MineSweeperPanel(rows, columns, mines);
-		setMinimumSize(new Dimension(45 * rows, 45 * columns));
+		setMinimumSize(new Dimension(45 * rows, 45 * columns)); // should make squares big enough for the numbers to be seen
 		setMaximumSize(new Dimension(45 * rows, 45 * columns));
 		add(panel, BorderLayout.CENTER);
 		setTitle("Minesweeper");
@@ -62,16 +61,9 @@ public class BorderFrame extends JFrame {
 	}
 	
 	public void startOver() {
-		
-		/*remove(panel);
-		panel = new MineSweeperPanel(rows, columns, mines);
-		top = new TopPanel(panel, this, mines);
-		System.out.println(top.getFlags().getText());
-		panel.setTop(top);
-		add(panel);
-		panel.repaint(); */
+
 		setVisible(false);
-		BorderFrame frame = new BorderFrame(rows, columns, mines);
+		BorderFrame frame = new BorderFrame(rows, columns, mines); // make this one disappear and make a new one appear
 	}
 
 	/** Getter for panel

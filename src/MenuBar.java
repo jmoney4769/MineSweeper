@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-/**
+/** JMenBar that shows options in the BorderFrame
  * @author Jared Moore
  * @version Nov 16, 2012
  */
@@ -19,8 +19,7 @@ public class MenuBar extends JMenuBar {
 	JMenuItem beginner = new JMenuItem("Beginner"), intermediate = new JMenuItem("Intermediate"), expert = new JMenuItem("Expert"),
 			custom = new JMenuItem("Custom"), scores = new JMenuItem("Scores"), hint = new JMenuItem("Hint");
 
-	/** Constructor for MenuBar
-	 * 
+	/** Constructor for MenuBar 
 	 */
 	public MenuBar(BorderFrame frame) {
 		
@@ -28,7 +27,7 @@ public class MenuBar extends JMenuBar {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // changes the look a little, my system is themed so this looks pretty sweet
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
-			System.err.println("You have an issue");
+			System.err.println("You have an issue"); // if one of these comes up, just comment out this block, your system has issues or does not have a look and feel (so no UI?)
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -75,6 +74,10 @@ public class MenuBar extends JMenuBar {
 		setVisible(true);
 	}
 	
+	/** ActionListener for the menu items
+	 * @author Jared Moore
+	 * @version Nov 19, 2012
+	 */
 	private class Action implements ActionListener {
 		
 		/* (non-Javadoc)
@@ -85,7 +88,7 @@ public class MenuBar extends JMenuBar {
 			
 			if (e.getSource().equals(beginner)) {
 				frame.setVisible(false);
-				BorderFrame newGame = new BorderFrame(8, 8, 10);
+				BorderFrame newGame = new BorderFrame(8, 8, 10); // set the old frame to invisible and make a new one
 			}
 			else if (e.getSource().equals(intermediate)) {
 				frame.setVisible(false);
